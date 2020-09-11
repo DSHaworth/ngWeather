@@ -10,6 +10,7 @@ import { MaterialModule } from './material-module';
 import { HomeComponent } from './views/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule, // Allows ngModel
-    ReactiveFormsModule, // Allows Form Control
+    ReactiveFormsModule, // Allows Form Control,
+    HttpClientModule,
     MaterialModule
   ],
   providers: [],

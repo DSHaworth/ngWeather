@@ -3,18 +3,36 @@
 <div style="display: flex; flex-direction: row; justify-content: space-between; width: 800px;">
   <div>
     <form class="" [formGroup]="searchFormGroup">
-      <mat-form-field class="">
+      <mat-form-field class="" style="width: 400px;">
         <mat-label>Search Location</mat-label>
         <input
+          [matAutocomplete]="auto"
           type="text"
           formControlName="search"
           matInput
           placeholder="Zip code">
         <mat-icon matSuffix>search</mat-icon>
+        <mat-autocomplete #auto="matAutocomplete" >
+          <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
+          <ng-container *ngIf="!isLoading">
+            <mat-option *ngFor="let suggestion of suggestions" [value]="suggestion.text">
+              <span>{{suggestion.text}}</span>
+            </mat-option>
+          </ng-container>
+        </mat-autocomplete>
       </mat-form-field>
-      <span style="border: 2px solid red;">{{ search }}</span>
+
     </form>
   </div>
+
+  <ng-container *ngIf="errorMsg; else elseTemplate">
+    {{errorMsg}}
+  </ng-container>
+  <ng-template #elseTemplate>
+    <h5>Selected Value: {{searchValue}}</h5>
+  </ng-template>
+
+
   <div>
     <button mat-icon-button aria-label="Refresh maps" (click)="getMaps()">
       <mat-icon>refresh</mat-icon>
