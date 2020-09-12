@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -5,7 +6,14 @@ import { Injectable } from '@angular/core';
 })
 export class ArcgisService {
 
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) { }
+
+  getSuggestions( value: string){
+    return this.http.get(`http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?text=${value}&f=json&maxSuggestions=10&countryCode=USA,PRI,VIR,GUM,ASM&category=Land%20Features,Bay,Channel,Cove,Dam,Delta,Gulf,Lagoon,Lake,Ocean,Reef,Reservoir,Sea,Sound,Strait,Waterfall,Wharf,Amusement%20Park,Historical%20Monument,Landmark,Tourist%20Attraction,Zoo,College,Beach,Campground,Golf%20Course,Harbor,Nature%20Reserve,Other%20Parks%20and%20Outdoors,Park,Racetrack,Scenic%20Overlook,Ski%20Resort,Sports%20Center,Sports%20Field,Wildlife%20Reserve,Airport,Ferry,Marina,Pier,Port,Resort,Postal,Populated%20Place`);
+  }
+
 }
 //http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?text=68135&f=json&maxSuggestions=10
 //http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?text=68135&f=json&maxSuggestions=10&countryCode=USA,PRI,VIR,GUM,ASM

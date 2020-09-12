@@ -1,10 +1,11 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatAutocompleteActivatedEvent } from '@angular/material/autocomplete';
+import { Observable } from 'rxjs';
 
 import { debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
-import { getMatInputUnsupportedTypeError } from '@angular/material/input';
-import { ArcGisSuggestions } from 'src/app/models/arcgis-suggestions';
+import { ArcGisSuggestion } from 'src/app/models/arcgis-suggestion';
+import { ArcgisService } from 'src/app/services/arcgis.service';
 
 @Component({
   selector: 'app-home',
@@ -13,9 +14,14 @@ import { ArcGisSuggestions } from 'src/app/models/arcgis-suggestions';
 })
 export class HomeComponent implements OnInit {
 
-  readonly usMapSource = "//forecast.weather.gov/wwamap/png/US.png";
-  readonly alaskaMapSource = "//forecast.weather.gov/wwamap/png/ak.png";
-  readonly hawaiiMapSource = "//weather.gov/wwamap/png/hi.png";
+  readonly usMapSource: string = "//forecast.weather.gov/wwamap/png/US.png";
+  readonly alaskaMapSource: string = "//forecast.weather.gov/wwamap/png/ak.png";
+  readonly hawaiiMapSource: string = "//weather.gov/wwamap/png/hi.png";
+  readonly emptySuggestion: ArcGisSuggestion = {
+    isCollection: false,
+    text: "",
+    magicKey: ""
+  }
 
   searchFormGroup: FormGroup;
   usMap:string;
@@ -23,20 +29,31 @@ export class HomeComponent implements OnInit {
   hawaiiMap: string;
   timeStamp: string;
 
-  suggestions: ArcGisSuggestions[];
+  suggestions: ArcGisSuggestion[];
   isLoading = false;
   errorMsg: string;
+  target: ArcGisSuggestion = this.emptySuggestion;
 
   constructor(
     private searchFormBuilder: FormBuilder,
-    private http: HttpClient
+    private arcgisService: ArcgisService
   ) {
     this.initSearchFormGroup();
   }
 
-  get searchValue() { return this.searchFormGroup.get('search').value; }
+  public getWeather(){
+    alert("Get weather for " + this.target.text);
+  }
 
-  getMaps():void{
+  public displayProperty(value:ArcGisSuggestion): string | ArcGisSuggestion {
+    return value ? value.text : value;
+  }
+
+  // public updateMySelection(selectedItem: ArcGisSuggestion){
+  //   this.target = selectedItem;
+  // }
+
+  public getMaps():void{
 
     let now = new Date();
     let cacheBust = now.getTime();
@@ -47,11 +64,62 @@ export class HomeComponent implements OnInit {
     this.timeStamp = now.toUTCString();
   }
 
-  initSearchFormGroup(){
+
+  // private get searchValue(): ArcGisSuggestion {
+  //   return this.searchFormGroup.get('search').value;
+
+  //   return {
+  //     isCollection: false,
+  //     text: this.searchFormGroup.get('search').value,
+  //     magicKey: ""
+  //   };
+  // }
+
+  private initSuggestions(){
+    // https://www.freakyjolly.com/angular-material-autocomplete-example-using-server-results/#.X1rZwHlKiUk
+    this.searchFormGroup.get('search').valueChanges
+      .pipe(
+        debounceTime(500),
+        tap({
+          //https://stackblitz.com/edit/rxjs-deprecated-null-tap
+          next: () => {
+            this.errorMsg = "";
+            this.suggestions = [];
+            this.isLoading = true;
+          }
+        }),
+        switchMap((value) => this.arcgisService.getSuggestions(value)
+          .pipe(
+            finalize(() => {
+              this.isLoading = false;
+            }),
+          )
+        )
+        // switchMap(() => this.arcgisService.getSuggestions(this.searchValue.text)
+        //   .pipe(
+        //     finalize(() => {
+        //       this.isLoading = false;
+        //     }),
+        //   )
+        // )
+      )
+      .subscribe(data => {
+        if (data['suggestions'] && data['suggestions'].length === 0) {
+          this.errorMsg = "No records returned";
+          this.suggestions = [];
+          this.target = this.emptySuggestion;
+        } else {
+          this.errorMsg = "";
+          this.suggestions = data['suggestions'];
+        }
+      });
+  }
+
+  private initSearchFormGroup(){
     this.searchFormGroup = this.createSearchFormGroup();
   }
 
-  createSearchFormGroup(){
+  private createSearchFormGroup(){
     return this.searchFormBuilder.group({
       search: ['', Validators.required]
     });
@@ -60,38 +128,6 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.getMaps();
 
-    // https://www.freakyjolly.com/angular-material-autocomplete-example-using-server-results/#.X1rZwHlKiUk
-    this.searchFormGroup.valueChanges
-      .pipe(
-        debounceTime(500),
-        tap(() => {
-          this.errorMsg = "";
-          this.suggestions = [];
-          this.isLoading = true;
-        }),
-        switchMap(value => this.http.get(`http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?text=${this.searchValue}&f=json&maxSuggestions=10&countryCode=USA,PRI,VIR,GUM,ASM&category=Land%20Features,Bay,Channel,Cove,Dam,Delta,Gulf,Lagoon,Lake,Ocean,Reef,Reservoir,Sea,Sound,Strait,Waterfall,Wharf,Amusement%20Park,Historical%20Monument,Landmark,Tourist%20Attraction,Zoo,College,Beach,Campground,Golf%20Course,Harbor,Nature%20Reserve,Other%20Parks%20and%20Outdoors,Park,Racetrack,Scenic%20Overlook,Ski%20Resort,Sports%20Center,Sports%20Field,Wildlife%20Reserve,Airport,Ferry,Marina,Pier,Port,Resort,Postal,Populated%20Place`)
-          .pipe(
-            finalize(() => {
-              this.isLoading = false;
-            }),
-          )
-        )
-      )
-      .subscribe(data => {
-
-        console.log(data)
-
-        if (data['suggestions'] && data['suggestions'].length === 0) {
-          this.errorMsg = "No records returned";
-          this.suggestions = [];
-        } else {
-          this.errorMsg = "";
-          this.suggestions = data['suggestions'];
-          console.log(data);
-        }
-
-      });
-
+    this.initSuggestions();
   }
-
 }

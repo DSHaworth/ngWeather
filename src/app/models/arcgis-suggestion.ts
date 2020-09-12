@@ -1,4 +1,4 @@
-export interface ArcGisSuggestions {
+export interface ArcGisSuggestion {
   isCollection: boolean;
   magicKey: string;
   text: string;
