@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatAutocompleteActivatedEvent } from '@angular/material/autocomplete';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
-import { debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
+import { debounceTime, tap, switchMap, finalize, map } from 'rxjs/operators';
 import { ArcGisSuggestion } from 'src/app/models/arcgis-suggestion';
 import { ArcgisService } from 'src/app/services/arcgis.service';
 
@@ -49,10 +49,6 @@ export class HomeComponent implements OnInit {
     return value ? value.text : value;
   }
 
-  // public updateMySelection(selectedItem: ArcGisSuggestion){
-  //   this.target = selectedItem;
-  // }
-
   public getMaps():void{
 
     let now = new Date();
@@ -64,17 +60,6 @@ export class HomeComponent implements OnInit {
     this.timeStamp = now.toUTCString();
   }
 
-
-  // private get searchValue(): ArcGisSuggestion {
-  //   return this.searchFormGroup.get('search').value;
-
-  //   return {
-  //     isCollection: false,
-  //     text: this.searchFormGroup.get('search').value,
-  //     magicKey: ""
-  //   };
-  // }
-
   private initSuggestions(){
     // https://www.freakyjolly.com/angular-material-autocomplete-example-using-server-results/#.X1rZwHlKiUk
     this.searchFormGroup.get('search').valueChanges
@@ -85,16 +70,14 @@ export class HomeComponent implements OnInit {
           next: () => {
             this.errorMsg = "";
             this.suggestions = [];
-            this.isLoading = true;
           }
         }),
-        switchMap((value) => this.arcgisService.getSuggestions(value)
-          .pipe(
-            finalize(() => {
-              this.isLoading = false;
-            }),
-          )
-        )
+        switchMap((value) => this.getData(value).pipe(
+          finalize(() => {
+            this.isLoading = false;
+          })
+        ))
+
         // switchMap(() => this.arcgisService.getSuggestions(this.searchValue.text)
         //   .pipe(
         //     finalize(() => {
@@ -103,7 +86,9 @@ export class HomeComponent implements OnInit {
         //   )
         // )
       )
+      //.subscribe();
       .subscribe(data => {
+
         if (data['suggestions'] && data['suggestions'].length === 0) {
           this.errorMsg = "No records returned";
           this.suggestions = [];
@@ -114,6 +99,82 @@ export class HomeComponent implements OnInit {
         }
       });
   }
+
+  private getData(value: string | ArcGisSuggestion): Observable<ArcGisSuggestion[]>{
+    if( typeof value === 'string'){
+      //this.arcgisService.getSuggestions(value)
+      console.log("Search");
+
+      this.isLoading = true;
+      return  <Observable<ArcGisSuggestion[]>> this.arcgisService.getSuggestions(value);
+      // .subscribe({
+      //   next: (data) => {
+      //     if (data['suggestions'] && data['suggestions'].length === 0) {
+      //       this.errorMsg = "No records returned";
+      //       this.suggestions = [];
+      //       this.target = this.emptySuggestion;
+      //     } else {
+      //       this.errorMsg = "";
+      //       this.suggestions = data['suggestions'];
+      //     }
+      //   },     // nextHandler
+      //   error: () => {  },    // errorHandler
+      //   complete: () => {
+      //     this.isLoading = true;
+      //   }
+      // });
+    } else {
+      console.log("Already found")
+      return of([value]);
+    }
+    return null;
+  }
+
+  public updateMySelection(selectedItem: ArcGisSuggestion){
+    this.target = selectedItem;
+  }
+
+
+
+  // private initSuggestions(){
+  //   // https://www.freakyjolly.com/angular-material-autocomplete-example-using-server-results/#.X1rZwHlKiUk
+  //   this.searchFormGroup.get('search').valueChanges
+  //     .pipe(
+  //       debounceTime(500),
+  //       tap({
+  //         //https://stackblitz.com/edit/rxjs-deprecated-null-tap
+  //         next: () => {
+  //           this.errorMsg = "";
+  //           this.suggestions = [];
+  //           this.isLoading = true;
+  //         }
+  //       }),
+  //       switchMap((value) => this.arcgisService.getSuggestions(value)
+  //         .pipe(
+  //           finalize(() => {
+  //             this.isLoading = false;
+  //           }),
+  //         )
+  //       )
+  //       // switchMap(() => this.arcgisService.getSuggestions(this.searchValue.text)
+  //       //   .pipe(
+  //       //     finalize(() => {
+  //       //       this.isLoading = false;
+  //       //     }),
+  //       //   )
+  //       // )
+  //     )
+  //     .subscribe(data => {
+  //       if (data['suggestions'] && data['suggestions'].length === 0) {
+  //         this.errorMsg = "No records returned";
+  //         this.suggestions = [];
+  //         this.target = this.emptySuggestion;
+  //       } else {
+  //         this.errorMsg = "";
+  //         this.suggestions = data['suggestions'];
+  //       }
+  //     });
+  // }
 
   private initSearchFormGroup(){
     this.searchFormGroup = this.createSearchFormGroup();

@@ -13,7 +13,7 @@
           placeholder="Location">
         <mat-icon matSuffix>search</mat-icon>
         <!-- (optionSelected)="updateMySelection($event.option.value)" -->
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayProperty" >
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayProperty" (optionSelected)="updateMySelection($event.option.value)" >
           <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
           <ng-container *ngIf="!isLoading">
             <mat-option *ngFor="let suggestion of suggestions" [value]="suggestion">
