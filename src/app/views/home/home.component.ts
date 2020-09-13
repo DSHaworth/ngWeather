@@ -41,7 +41,13 @@ export class HomeComponent implements OnInit {
   }
 
   public getWeather(){
-    alert("Get weather for " + this.target.text);
+    console.log("Get weather for " + this.target.text);
+    this.arcgisService.find(this.target.text, this.target.magicKey).subscribe((data)=>{
+      console.log(data);
+      console.log(data.locations[0]);
+      // let loc = data.location[0];
+      // console.log(data.location[0]);
+    })
   }
 
   public updateMySelection(selectedItem: ArcGisSuggestion){
