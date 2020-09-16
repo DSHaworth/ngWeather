@@ -24,7 +24,7 @@
       </mat-form-field>
     </form>
     <div style="display: flex; flex-direction: row; align-items: flex-end; padding-left: 10px; padding-bottom: 1.25rem;">
-      <button style="margin-right: .5rem;" mat-raised-button color="primary" [disabled]="!target.text" (click)="getWeather()">Get Weather for {{target.text}}</button>
+      <button style="margin-right: .5rem;" mat-raised-button color="primary" [disabled]="!target.text" (click)="getWeatherByLocation()">Get Weather for {{target.text}}</button>
       <ng-container *ngIf="errorMsg; else elseTemplate">
         {{errorMsg}}
       </ng-container>

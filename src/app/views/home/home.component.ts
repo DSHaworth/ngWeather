@@ -3,8 +3,12 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 
 import { debounceTime, tap, switchMap, finalize, map } from 'rxjs/operators';
+import { ArcGisLocationDetails } from 'src/app/models/arcgis-location-details';
+import { ForecastDetails } from 'src/app/models/forecast-details'
 import { ArcGisSuggestion } from 'src/app/models/arcgis-suggestion';
+import { GridDetails } from 'src/app/models/grid-details';
 import { ArcgisService } from 'src/app/services/arcgis.service';
+import { WeatherGovService } from 'src/app/services/weather-gov.service';
 
 @Component({
   selector: 'app-home',
@@ -35,18 +39,33 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private searchFormBuilder: FormBuilder,
-    private arcgisService: ArcgisService
+    private arcgisService: ArcgisService,
+    private weatherGovService: WeatherGovService
   ) {
     this.initSearchFormGroup();
   }
 
-  public getWeather(){
-    console.log("Get weather for " + this.target.text);
-    this.arcgisService.find(this.target.text, this.target.magicKey).subscribe((data)=>{
+  public getWeatherByLocation(){
+    this.arcgisService.find(this.target.text, this.target.magicKey).subscribe((data: ArcGisLocationDetails)=>{
+      let lat = data.locations[0].feature.geometry.y;
+      let long = data.locations[0].feature.geometry.x;
+
+      this.getWeatherByPoints(lat, long);
+    })
+
+  }
+
+  public getWeatherByPoints(lat: number, long: number){
+    console.log(`GetWeatherByPoints(${lat}, ${long}`);
+
+    this.weatherGovService.getByCoords(lat,long).subscribe((data: GridDetails)=>{
+      this.getWeatherByForecast(data.properties.forecast);
+    })
+  }
+
+  private getWeatherByForecast(url){
+    this.weatherGovService.getByForecast(url).subscribe((data: ForecastDetails)=>{
       console.log(data);
-      console.log(data.locations[0]);
-      // let loc = data.location[0];
-      // console.log(data.location[0]);
     })
   }
 

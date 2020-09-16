@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse  } from '@angular/common/http';
+import { HttpClient  } from '@angular/common/http';
 
-import {  throwError } from 'rxjs';
-import { retry, catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
+import { HttpErrorHandlerService } from './http-error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,37 +10,22 @@ import { retry, catchError } from 'rxjs/operators';
 export class ArcgisService {
 
   constructor(
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private httpErrorHandlerService: HttpErrorHandlerService
   ) { }
 
   getSuggestions( value: string){
     return this.httpClient
             .get(`http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?text=${value}&f=json&maxSuggestions=10&countryCode=USA,PRI,VIR,GUM,ASM&category=Land%20Features,Bay,Channel,Cove,Dam,Delta,Gulf,Lagoon,Lake,Ocean,Reef,Reservoir,Sea,Sound,Strait,Waterfall,Wharf,Amusement%20Park,Historical%20Monument,Landmark,Tourist%20Attraction,Zoo,College,Beach,Campground,Golf%20Course,Harbor,Nature%20Reserve,Other%20Parks%20and%20Outdoors,Park,Racetrack,Scenic%20Overlook,Ski%20Resort,Sports%20Center,Sports%20Field,Wildlife%20Reserve,Airport,Ferry,Marina,Pier,Port,Resort,Postal,Populated%20Place`)
-            .pipe(catchError(this.handleError));
+            .pipe(catchError(this.httpErrorHandlerService.handleError));
   }
 
   find( text: string, magicKey: string){
     return this.httpClient
             .get(`http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find?text=${text}&magicKey=${magicKey}&f=json`)
-            .pipe(catchError(this.handleError));
+            .pipe(catchError(this.httpErrorHandlerService.handleError));
   }
-
-  //https://www.techiediaries.com/angular-10-tutorial-example-rest-crud-http-get-httpclient/
-  private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Unknown error!';
-    if (error.error instanceof ErrorEvent) {
-      // Client-side errors
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      // Server-side errors
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    window.alert(errorMessage);
-    return throwError(errorMessage);
-  }
-
 }
-
 
 //http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?text=68135&f=json&maxSuggestions=10
 //http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?text=68135&f=json&maxSuggestions=10&countryCode=USA,PRI,VIR,GUM,ASM
