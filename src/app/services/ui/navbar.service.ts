@@ -15,6 +15,11 @@ export class NavbarService {
       route: '/home',
     },
     {
+      displayName: 'ESRI',
+      iconName: 'fas fa-angle-right',
+      route: '/esri',
+    },
+    {
       displayName: 'About',
       iconName: 'fas fa-angle-right',
       route: '/about',

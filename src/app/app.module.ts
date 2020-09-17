@@ -11,13 +11,15 @@ import { HomeComponent } from './views/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { EsriComponent } from './views/esri/esri.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LandingPageComponent,
     HomeComponent,
-    NavbarComponent
+    NavbarComponent,
+    EsriComponent
   ],
   imports: [
     BrowserModule,
