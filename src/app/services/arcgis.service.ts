@@ -27,6 +27,11 @@ export class ArcgisService {
   }
 }
 
+// https://developers.arcgis.com/javascript/latest/guide/angular/
+// https://www.esri.com/content/dam/esrisites/en-us/events/conferences/2020/developer-summit/arcgis-api-for-javascript-building-apps-with-angular.pdf
+// https://medium.com/angular-in-depth/the-best-way-to-unsubscribe-rxjs-observable-in-the-angular-applications-d8f9aa42f6a0
+// https://blog.bitsrc.io/6-ways-to-unsubscribe-from-observables-in-angular-ab912819a78f
+
 //http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?text=68135&f=json&maxSuggestions=10
 //http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?text=68135&f=json&maxSuggestions=10&countryCode=USA,PRI,VIR,GUM,ASM
 //http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?text=68135&f=json&maxSuggestions=10&countryCode=USA,PRI,VIR,GUM,ASM&category=Land%20Features,Bay,Channel,Cove,Dam,Delta,Gulf,Lagoon,Lake,Ocean,Reef,Reservoir,Sea,Sound,Strait,Waterfall,Wharf,Amusement%20Park,Historical%20Monument,Landmark,Tourist%20Attraction,Zoo,College,Beach,Campground,Golf%20Course,Harbor,Nature%20Reserve,Other%20Parks%20and%20Outdoors,Park,Racetrack,Scenic%20Overlook,Ski%20Resort,Sports%20Center,Sports%20Field,Wildlife%20Reserve,Airport,Ferry,Marina,Pier,Port,Resort,Postal,Populated%20Place

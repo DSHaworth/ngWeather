@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 
 import { debounceTime, tap, switchMap, finalize, map } from 'rxjs/operators';
 import { ArcGisLocationDetails } from 'src/app/models/arcgis-location-details';
@@ -15,7 +15,7 @@ import { WeatherGovService } from 'src/app/services/weather-gov.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   readonly usMapSource: string = "//forecast.weather.gov/wwamap/png/US.png";
   readonly alaskaMapSource: string = "//forecast.weather.gov/wwamap/png/ak.png";
@@ -37,6 +37,12 @@ export class HomeComponent implements OnInit {
   errorMsg: string;
   target: ArcGisSuggestion = this.emptySuggestion;
 
+  // Subscriptions
+  findSubscription: Subscription;
+  searchSubscription: Subscription;
+  getByCoordsSubscription: Subscription;
+  getByForecaseSubscription: Subscription;
+
   constructor(
     private searchFormBuilder: FormBuilder,
     private arcgisService: ArcgisService,
@@ -46,27 +52,29 @@ export class HomeComponent implements OnInit {
   }
 
   public getWeatherByLocation(){
-    this.arcgisService.find(this.target.text, this.target.magicKey).subscribe((data: ArcGisLocationDetails)=>{
-      let lat = data.locations[0].feature.geometry.y;
-      let long = data.locations[0].feature.geometry.x;
-
-      this.getWeatherByPoints(lat, long);
-    })
-
+    this.findSubscription = this.arcgisService.find(this.target.text, this.target.magicKey)
+      .subscribe((data: ArcGisLocationDetails)=>{
+        let lat = data.locations[0].feature.geometry.y;
+        let long = data.locations[0].feature.geometry.x;
+        this.getWeatherByPoints(lat, long);
+      })
   }
 
   public getWeatherByPoints(lat: number, long: number){
     console.log(`GetWeatherByPoints(${lat}, ${long}`);
 
-    this.weatherGovService.getByCoords(lat,long).subscribe((data: GridDetails)=>{
-      this.getWeatherByForecast(data.properties.forecast);
-    })
+    this.getByCoordsSubscription = this.weatherGovService.getByCoords(lat,long)
+      .subscribe((data: GridDetails)=>{
+        console.log(data);
+        this.getWeatherByForecast(data.properties.forecast);
+      })
   }
 
   private getWeatherByForecast(url){
-    this.weatherGovService.getByForecast(url).subscribe((data: ForecastDetails)=>{
-      console.log(data);
-    })
+    this.getByForecaseSubscription = this.weatherGovService.getByForecast(url)
+      .subscribe((data: ForecastDetails)=>{
+        console.log(data);
+      })
   }
 
   public updateMySelection(selectedItem: ArcGisSuggestion){
@@ -90,7 +98,7 @@ export class HomeComponent implements OnInit {
 
   private initSuggestions(){
     // https://www.freakyjolly.com/angular-material-autocomplete-example-using-server-results/#.X1rZwHlKiUk
-    this.searchFormGroup.get('search').valueChanges
+    this.searchSubscription = this.searchFormGroup.get('search').valueChanges
       .pipe(
         debounceTime(500),
         tap({
@@ -140,5 +148,12 @@ export class HomeComponent implements OnInit {
     this.getMaps();
 
     this.initSuggestions();
+  }
+
+  ngOnDestroy(): void{
+    this.findSubscription.unsubscribe();
+    this.searchSubscription.unsubscribe();
+    this.getByCoordsSubscription.unsubscribe();
+    this.getByForecaseSubscription.unsubscribe();
   }
 }
