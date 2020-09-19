@@ -13,6 +13,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { EsriComponent } from './views/esri/esri.component';
 import { ForecastComponent } from './views/forecast/forecast.component';
+import { DialogForcastDetailComponent } from './dialogs/dialog-forcast-detail/dialog-forcast-detail.component';
+import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import { ForecastComponent } from './views/forecast/forecast.component';
     HomeComponent,
     NavbarComponent,
     EsriComponent,
-    ForecastComponent
+    ForecastComponent,
+    DialogForcastDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +35,9 @@ import { ForecastComponent } from './views/forecast/forecast.component';
     HttpClientModule,
     MaterialModule
   ],
-  providers: [],
+  providers: [
+    //{provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

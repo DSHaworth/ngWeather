@@ -10,13 +10,14 @@ export interface GridDetailProperties {
   cwa: string,
   fireWeatherZone: string,
   forecast: string,
+  forecastOffice: string;
   forcastGridData: string,
   forecastHourly: string,
   forecastZone: string,
   gridId: string,
   gridX: number,
   gridY: number,
-  obsercationStations: string,
+  observationStations: string,
   radarStation: string
 }
 

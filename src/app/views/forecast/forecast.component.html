@@ -1,5 +1,39 @@
-<p>forecast works!</p>
+<div *ngIf="forecastOffice">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        {{forecastOffice.name}}
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-selection-list [multiple]="false" (selectionChange)="onPeriodSelected($event)">
+        <mat-list-option *ngFor="let period of forecastDetails.properties.periods" [value]="period">
+          <div style="display: flex; flex-direction: row;">
+            <div>
+              <img matListAvatar  [src]="period.icon.replace('medium','small')" [alt]="period.shortForecast" />
+            </div>
+            <div style="padding-left: 10px;">
+              <div>
+                {{period.name}}
+              </div>
+              <div>
+                {{period.shortForecast}}
+              </div>
+            </div>
+          </div>
+          <!-- <mat-divider></mat-divider> -->
+        </mat-list-option>
+      </mat-selection-list>
+    </mat-card-content>
+  </mat-card>
 
-<pre><code>{{ gridDetails | json }}</code></pre>
+  <h1>Forecast Details</h1>
+  <pre><code>{{ forecastDetails | json }}</code></pre>
 
-<pre><code>{{ forecastDetails | json }}</code></pre>
+  <h1>Forecast Office</h1>
+  <pre><code>{{ forecastOffice | json }}</code></pre>
+
+  <h1>Grid Details</h1>
+  <pre><code>{{ gridDetails | json }}</code></pre>
+
+</div>

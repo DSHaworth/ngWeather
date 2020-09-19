@@ -2,6 +2,9 @@ import { DecimalPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError } from 'rxjs/operators';
+import { ForecastDetails } from '../models/forecast-details';
+import { IForecastOffice } from '../models/forecast-office';
+import { GridDetails } from '../models/grid-details';
 import { HttpErrorHandlerService } from './http-error-handler.service';
 
 @Injectable({
@@ -16,13 +19,19 @@ export class WeatherGovService {
 
   public getByCoords(lat: number, long: number){
     return this.httpClient
-            .get(`https://api.weather.gov/points/${lat},${long}`)
+            .get<GridDetails>(`https://api.weather.gov/points/${lat},${long}`)
             .pipe(catchError(this.httpErrorHandlerService.handleError));
   }
 
   public getByForecast(url: string){
     return this.httpClient
-            .get(url)
+            .get<ForecastDetails>(url)
+            .pipe(catchError(this.httpErrorHandlerService.handleError));
+  }
+
+  public getForecastOffice(url: string){
+    return this.httpClient
+            .get<IForecastOffice>(url)
             .pipe(catchError(this.httpErrorHandlerService.handleError));
   }
 

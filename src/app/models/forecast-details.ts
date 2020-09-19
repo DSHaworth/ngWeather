@@ -1,25 +1,25 @@
 export interface ForecastDetails {
   type: string,
-  geometry: Geometry,
-  properties: ForecastDetailProperties
+  geometry: IGeometry,
+  properties: IForecastDetailProperties
 }
 
-export interface Geometry{
+export interface IGeometry{
   type: string,
   coordinates: any[]
 }
 
-export interface ForecastDetailProperties{
+export interface IForecastDetailProperties{
   updated: string,
   units: string,
   forecastGenerator: string,
   generatedAt: string,
   updateTime: string,
   validTimes: string,
-  periods: Periods[]
+  periods: IPeriod[]
 }
 
-export interface Periods{
+export interface IPeriod{
   number: number,
   name: string,
   startTime: string,
