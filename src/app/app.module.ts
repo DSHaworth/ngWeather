@@ -12,6 +12,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { EsriComponent } from './views/esri/esri.component';
+import { ForecastComponent } from './views/forecast/forecast.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { EsriComponent } from './views/esri/esri.component';
     LandingPageComponent,
     HomeComponent,
     NavbarComponent,
-    EsriComponent
+    EsriComponent,
+    ForecastComponent
   ],
   imports: [
     BrowserModule,

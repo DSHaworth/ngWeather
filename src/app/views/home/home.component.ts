@@ -4,11 +4,9 @@ import { Observable, of, Subscription } from 'rxjs';
 
 import { debounceTime, tap, switchMap, finalize, map } from 'rxjs/operators';
 import { ArcGisLocationDetails } from 'src/app/models/arcgis-location-details';
-import { ForecastDetails } from 'src/app/models/forecast-details'
 import { ArcGisSuggestion } from 'src/app/models/arcgis-suggestion';
-import { GridDetails } from 'src/app/models/grid-details';
 import { ArcgisService } from 'src/app/services/arcgis.service';
-import { WeatherGovService } from 'src/app/services/weather-gov.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -40,13 +38,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   // Subscriptions
   findSubscription: Subscription;
   searchSubscription: Subscription;
-  getByCoordsSubscription: Subscription;
-  getByForecaseSubscription: Subscription;
 
   constructor(
+    private router: Router,
     private searchFormBuilder: FormBuilder,
     private arcgisService: ArcgisService,
-    private weatherGovService: WeatherGovService
   ) {
     this.initSearchFormGroup();
   }
@@ -56,24 +52,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe((data: ArcGisLocationDetails)=>{
         let lat = data.locations[0].feature.geometry.y;
         let long = data.locations[0].feature.geometry.x;
-        this.getWeatherByPoints(lat, long);
-      })
-  }
-
-  public getWeatherByPoints(lat: number, long: number){
-    console.log(`GetWeatherByPoints(${lat}, ${long}`);
-
-    this.getByCoordsSubscription = this.weatherGovService.getByCoords(lat,long)
-      .subscribe((data: GridDetails)=>{
-        console.log(data);
-        this.getWeatherByForecast(data.properties.forecast);
-      })
-  }
-
-  private getWeatherByForecast(url){
-    this.getByForecaseSubscription = this.weatherGovService.getByForecast(url)
-      .subscribe((data: ForecastDetails)=>{
-        console.log(data);
+        this.router.navigate(['/forecast'], { queryParams: { lat: lat, long: long } });
       })
   }
 
@@ -121,6 +100,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
   }
 
+  // Determine if source is string (do a search) or an object (do nothing)
   private getData(value: string | ArcGisSuggestion): Observable<ArcGisSuggestion[]>{
     if( typeof value === 'string'){
       this.isLoading = true;
@@ -146,14 +126,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getMaps();
-
     this.initSuggestions();
   }
 
   ngOnDestroy(): void{
     this.findSubscription.unsubscribe();
     this.searchSubscription.unsubscribe();
-    this.getByCoordsSubscription.unsubscribe();
-    this.getByForecaseSubscription.unsubscribe();
   }
 }
