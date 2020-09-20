@@ -1,9 +1,23 @@
-<h2 mat-dialog-title>Install Angular</h2>
+<div mat-dialog-title style="display: flex; flex-direction: row; justify-content: space-between;">
+  <div>
+    {{data.name}}
+  </div>
+  <div>
+    <button mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
+  </div>
+</div>
+
 <mat-dialog-content class="mat-typography">
 
-<pre><code>{{ data | json }}</code></pre>
+  <div style="display: flex; flex-direction: row;">
+    <img [src]="data.icon.replace('medium','large')" [alt]="data.shortForecast" />
+    <div style="padding-left: .5rem;">
+      <div>{{data.isDaytime == true ? "High" : "Low"}} {{data.temperature}}{{data.temperatureUnit == "F" ? "&#8457;" : "&#8451;"}}</div>
+      <div>{{data.windSpeed}} {{getWindDirection(data.windDirection)}}</div>
+    </div>
+  </div>
+  <p style="padding-top: 1rem;">{{data.detailedForecast}}</p>
+
+  <!-- <pre><code>{{ data | json }}</code></pre> -->
 
 </mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Close</button>
-</mat-dialog-actions>

@@ -33,7 +33,7 @@ export class ForecastComponent implements OnInit, OnDestroy {
 
     let selectedPeriod = event.option.value;
 
-    const dialogRef = this.dialog.open(DialogForcastDetailComponent, {data: {forcast: selectedPeriod}});
+    const dialogRef = this.dialog.open(DialogForcastDetailComponent, {data: selectedPeriod, width: "50vw"});
 
     // dialogRef.afterClosed().subscribe(result => {
     //   console.log(`Dialog result: ${result}`);
