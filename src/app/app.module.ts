@@ -15,6 +15,7 @@ import { EsriComponent } from './views/esri/esri.component';
 import { ForecastComponent } from './views/forecast/forecast.component';
 import { DialogForcastDetailComponent } from './dialogs/dialog-forcast-detail/dialog-forcast-detail.component';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
     FormsModule, // Allows ngModel
     ReactiveFormsModule, // Allows Form Control,
     HttpClientModule,
+    FlexLayoutModule,
     MaterialModule
   ],
   providers: [

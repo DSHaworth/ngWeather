@@ -1,11 +1,37 @@
 <div *ngIf="forecastOffice">
   <mat-card>
-    <mat-card-header>
-      <mat-card-title>
-        {{forecastOffice.name}}
-      </mat-card-title>
+    <mat-card-header style="margin-top: -.5rem">
+      <mat-card-title-group style="display: flex; flex-flow: row nowrap; align-items: center;">
+        <mat-card-title style="margin-bottom: 0;">
+          {{forecastOffice.name}}
+        </mat-card-title>
+      </mat-card-title-group>
+      <div style="flex: auto"></div>
+      <button mat-icon-button (click)="refresh()" title="Refresh"><mat-icon>refresh</mat-icon></button>
     </mat-card-header>
+
     <mat-card-content>
+
+      <div class="content" fxLayout="row wrap" fxLayoutGap="1rem grid">
+        <div [fxFlex]="'25%'" fxFlex.xs="100%" fxFlex.sm="33%" *ngFor="let period of forecastDetails.properties.periods">
+          <mat-card class="mat-elevation-z4 clickable-card" (click)="showDetail(period)">
+            <mat-card-header style="justify-content: center;">
+              <mat-card-title>
+                {{period.name}}
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div style="text-align: center;">
+                <img [src]="period.icon" [alt]="period.shortForecast" />
+                <p>
+                  {{period.shortForecast}}
+                </p>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+
       <mat-selection-list [multiple]="false" (selectionChange)="onPeriodSelected($event)">
         <mat-list-option *ngFor="let period of forecastDetails.properties.periods" [value]="period">
           <div style="display: flex; flex-direction: row;">

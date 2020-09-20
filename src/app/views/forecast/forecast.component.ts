@@ -33,12 +33,27 @@ export class ForecastComponent implements OnInit, OnDestroy {
 
     let selectedPeriod = event.option.value;
 
-    const dialogRef = this.dialog.open(DialogForcastDetailComponent, {data: selectedPeriod, width: "50vw"});
+    this.showDetail(selectedPeriod);
+
+    //const dialogRef = this.dialog.open(DialogForcastDetailComponent, {data: selectedPeriod, width: "50vw"});
 
     // dialogRef.afterClosed().subscribe(result => {
     //   console.log(`Dialog result: ${result}`);
     // });
 
+  }
+
+  public showDetail(period){
+    const dialogRef = this.dialog.open(DialogForcastDetailComponent, {data: period, width: "50vw"});
+  }
+
+  public refresh(){
+    this.activatedRoute.queryParams.subscribe(params => {
+      let lat = params['lat'];
+      let long = params['long'];
+
+      this.getWeatherByPoints(lat, long);
+    });
   }
 
   private getWeatherByPoints(lat: number, long: number){
@@ -77,12 +92,7 @@ export class ForecastComponent implements OnInit, OnDestroy {
   // }
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe(params => {
-      let lat = params['lat'];
-      let long = params['long'];
-
-      this.getWeatherByPoints(lat, long);
-    });
+    this.refresh();
   }
 
   ngOnDestroy(): void{

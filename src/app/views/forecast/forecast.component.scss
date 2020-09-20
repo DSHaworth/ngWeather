@@ -1,0 +1,10 @@
+// https://zoaibkhan.com/blog/create-a-responsive-card-grid-in-angular-using-flex-layout-part-1/
+.cards{
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.clickable-card:hover{
+  cursor: pointer;
+  background-color: rgba(0,0,0,.04);
+}
