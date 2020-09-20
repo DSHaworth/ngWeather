@@ -12,22 +12,29 @@
 
     <mat-card-content>
 
-      <div class="content" fxLayout="row wrap" fxLayoutGap="1rem grid">
-        <div [fxFlex]="'25%'" fxFlex.xs="100%" fxFlex.sm="33%" *ngFor="let period of forecastDetails.properties.periods">
+      <div class="content">
+        <div class="card" *ngFor="let period of forecastDetails.properties.periods">
           <mat-card class="mat-elevation-z4 clickable-card" (click)="showDetail(period)">
             <mat-card-header style="justify-content: center;">
               <mat-card-title>
                 {{period.name}}
               </mat-card-title>
             </mat-card-header>
-            <mat-card-content>
-              <div style="text-align: center;">
-                <img [src]="period.icon" [alt]="period.shortForecast" />
+            <mat-card-content style="display:flex; flex-direction: column;">
+              <div style="text-align: center; display: flex; flex-flow: column nowrap;">
                 <p>
-                  {{period.shortForecast}}
+                  <img [src]="period.icon" [alt]="period.shortForecast" />
                 </p>
+                <div>
+                  {{period.shortForecast}}
+                </div>
               </div>
             </mat-card-content>
+            <mat-card-footer>
+              <div style="display: flex; justify-content: center; align-items: flex-end;">
+                {{period.isDaytime == true ? "High" : "Low"}} {{period.temperature}}{{period.temperatureUnit == "F" ? "&#8457;" : "&#8451;"}}
+              </div>
+            </mat-card-footer>
           </mat-card>
         </div>
       </div>

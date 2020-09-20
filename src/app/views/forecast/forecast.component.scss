@@ -1,10 +1,66 @@
 // https://zoaibkhan.com/blog/create-a-responsive-card-grid-in-angular-using-flex-layout-part-1/
-.cards{
+
+.content {
   display: flex;
   flex-flow: row wrap;
 }
 
-.clickable-card:hover{
+.content > .card {
+  padding: 0 1rem 1rem 0;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.content > .card > .mat-card{
+  width: 100%;
+}
+
+.content > .card .clickable-card:hover{
   cursor: pointer;
   background-color: rgba(0,0,0,.04);
+}
+
+.content .mat-card{
+	display:flex;/** <-- Add this **/
+	flex-direction: column;/** <-- Add this **/
+}
+
+.content .mat-card .mat-card-content {
+	flex-grow: 1;/** <-- Add this **/
+	overflow: auto; /** <-- Add this **/
+}
+
+// https://github.com/angular/flex-layout/wiki/Responsive-API
+/* XS - Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .content > .card {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+}
+
+/* SM - Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .content > .card {
+    flex: 1 1 33%;
+    max-width: 33%;
+  }
+}
+
+/* MD - Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+
+}
+
+/* LG - Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+
+}
+
+/* XL - Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .content > .card {
+    flex: 1 1 25%;
+    max-width: 25%;
+  }
 }
