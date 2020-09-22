@@ -16,7 +16,7 @@
         <div class="card" *ngFor="let period of forecastDetails.properties.periods">
           <mat-card class="mat-elevation-z4 clickable-card" (click)="showDetail(period)">
             <mat-card-header style="justify-content: center;">
-              <mat-card-title>
+              <mat-card-title style="white-space: nowrap;">
                 {{period.name}}
               </mat-card-title>
             </mat-card-header>

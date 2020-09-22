@@ -9,8 +9,10 @@
 
 <mat-dialog-content class="mat-typography">
 
-  <div style="display: flex; flex-direction: row;">
-    <img [src]="data.icon.replace('medium','large')" [alt]="data.shortForecast" />
+  <div class="dialog-content">
+    <div>
+      <img [src]="data.icon.replace('medium','large')" [alt]="data.shortForecast" />
+    </div>
     <div style="padding-left: .5rem;">
       <div>{{data.isDaytime == true ? "High" : "Low"}} {{data.temperature}}{{data.temperatureUnit == "F" ? "&#8457;" : "&#8451;"}}</div>
       <div>{{data.windSpeed}} {{getWindDirection(data.windDirection)}}</div>
