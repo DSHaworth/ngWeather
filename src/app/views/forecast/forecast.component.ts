@@ -44,7 +44,7 @@ export class ForecastComponent implements OnInit, OnDestroy {
   }
 
   public showDetail(period){
-    const dialogRef = this.dialog.open(DialogForcastDetailComponent, {data: period, width: window.innerHeight < 768 ? "80vw" : "50vw"});
+    const dialogRef = this.dialog.open(DialogForcastDetailComponent, {data: period, width: window.innerWidth < 768 ? "80vw" : "50vw"});
   }
 
   public refresh(){
