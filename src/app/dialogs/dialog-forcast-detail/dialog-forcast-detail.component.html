@@ -13,12 +13,13 @@
     <div>
       <img [src]="data.icon.replace('medium','large')" [alt]="data.shortForecast" />
     </div>
-    <div style="padding-left: .5rem;">
-      <h2>{{data.isDaytime == true ? "High" : "Low"}} {{data.temperature}}{{data.temperatureUnit == "F" ? "&#8457;" : "&#8451;"}}</h2>
-      <h2>{{data.windSpeed}} {{getWindDirection(data.windDirection)}}</h2>
+    <div class="weather-details">
+      <p>{{data.isDaytime == true ? "High" : "Low"}} {{data.temperature}}{{data.temperatureUnit == "F" ? "&#8457;" : "&#8451;"}}</p>
+      <p>{{data.windSpeed}} {{getWindDirection(data.windDirection)}}</p>
+      <p>{{data.detailedForecast}}</p>
     </div>
   </div>
-  <p style="font-size: 1.1rem; padding-top: 1rem;">{{data.detailedForecast}}</p>
+
 
   <!-- <pre><code>{{ data | json }}</code></pre> -->
 

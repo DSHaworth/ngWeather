@@ -8,14 +8,21 @@
 
 @media only screen and (max-width: 600px) {
   .dialog-content {
+    display: flex;
     flex-direction: column;
-    justify-content: center;
+    align-items: center;
+  }
+
+  .weather-details{
+    text-align: center;
   }
 }
 
 /* SM - Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-
+  .weather-details{
+    padding-left: 10px;
+  }
 }
 
 /* MD - Medium devices (landscape tablets, 768px and up) */
