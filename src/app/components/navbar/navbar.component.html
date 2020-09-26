@@ -5,7 +5,7 @@
     <div fxShow="true" fxHide.lt-md>
       <!-- The following menu items will be hidden on both SM and XS screen sizes -->
       <span *ngFor="let item of menu">
-        <a mat-button [routerLink]="item.route">
+        <a mat-button [href]="item.route">
           {{ item.displayName }}
         </a>
       </span>

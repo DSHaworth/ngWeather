@@ -15,6 +15,7 @@ import { EsriComponent } from './views/esri/esri.component';
 import { ForecastComponent } from './views/forecast/forecast.component';
 import { DialogForcastDetailComponent } from './dialogs/dialog-forcast-detail/dialog-forcast-detail.component';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { WeatherComponent } from './views/weather/weather.component';
 //import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
@@ -25,7 +26,8 @@ import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
     NavbarComponent,
     EsriComponent,
     ForecastComponent,
-    DialogForcastDetailComponent
+    DialogForcastDetailComponent,
+    WeatherComponent
   ],
   imports: [
     BrowserModule,

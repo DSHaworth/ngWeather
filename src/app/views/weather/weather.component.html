@@ -1,0 +1,110 @@
+<p>Maps retrieved at {{timeStamp}}</p>
+
+<div style="display: flex; flex-direction: row; justify-content: space-between; width: 800px;">
+  <div style="display: flex; flex-direction: row; justify-content: flex-start;">
+    <form class="" [formGroup]="searchFormGroup">
+      <mat-form-field class="" style="width: 250px;">
+        <mat-label>Search Location</mat-label>
+        <input
+          [matAutocomplete]="auto"
+          type="text"
+          formControlName="search"
+          matInput
+          placeholder="Location">
+        <mat-icon matSuffix>search</mat-icon>
+        <!-- (optionSelected)="updateMySelection($event.option.value)" -->
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayProperty" (optionSelected)="updateMySelection($event.option.value)" >
+          <mat-option *ngIf="isLoading" class="is-loading">
+            <mat-progress-bar mode='query'></mat-progress-bar>
+          </mat-option>
+          <ng-container *ngIf="!isLoading">
+            <mat-option *ngFor="let suggestion of suggestions" [value]="suggestion">
+              {{suggestion.text}}
+            </mat-option>
+          </ng-container>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+    <div style="display: flex; flex-direction: row; align-items: flex-end; padding-left: 10px; padding-bottom: 1.25rem;">
+      <button style="margin-right: .5rem;" mat-raised-button color="primary" [disabled]="!target.text" (click)="getWeatherByLocation()">Get Weather for {{target.text}}</button>
+      <ng-container *ngIf="errorMsg; else elseTemplate">
+        {{errorMsg}}
+      </ng-container>
+      <ng-template #elseTemplate>
+        <!-- Selected Value: <b>{{target.text}}</b> -->
+      </ng-template>
+    </div>
+
+  </div>
+
+  <div>
+    <button mat-icon-button aria-label="Refresh maps" (click)="getMaps()">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </div>
+</div>
+
+<div class="USMap">
+  <img id="us" [src]="usMap" usemap="#US_large_imagemap_800_500">
+  <img id="alaska" [src]="alaskaMap" usemap="#alaska_imagemap_130_115">
+  <img id="hawaii" [src]="hawaiiMap" usemap="#hawaii_imagemap">
+</div>
+
+<div id="wwa">
+  <div id="wwaleft11">
+    <ul>
+      <li><div style="background-color:#8B0000;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Flash Flood Warning">Flash Flood Warning</a></li>
+      <li><div style="background-color:#FFA500;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Special Marine Warning">Special Marine Warning</a></li>
+      <li><div style="background-color:#FF69B4;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Winter Storm Warning">Winter Storm Warning</a></li>
+      <li><div style="background-color:#DAA520;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=High Wind Warning">High Wind Warning</a></li>
+      <li><div style="background-color:#00FF00;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Flood Warning">Flood Warning</a></li>
+      <li><div style="background-color:#C71585;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Excessive Heat Warning">Excessive Heat Warning</a></li>
+      <li><div style="background-color:#DDA0DD;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Gale Warning">Gale Warning</a></li>
+      <li><div style="background-color:#483D8B;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Freeze Warning">Freeze Warning</a></li>
+      <li><div style="background-color:#F0E68C;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Dense Smoke Advisory">Dense Smoke Advisory</a></li>
+      <li><div style="background-color:#FFE4B5;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Hurricane Local Statement">Hurricane Local Statement</a></li>
+    </ul>
+  </div>
+  <div id="wwacenter_l11">
+    <ul>
+      <li><div style="background-color:#FF1493;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Red Flag Warning">Red Flag Warning</a></li>
+      <li><div style="background-color:#7B68EE;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Winter Weather Advisory">Winter Weather Advisory</a></li>
+      <li><div style="background-color:#FF7F50;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Heat Advisory">Heat Advisory</a></li>
+      <li><div style="background-color:#00FF7F;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Flood Advisory">Flood Advisory</a></li>
+      <li><div style="background-color:#7CFC00;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Lakeshore Flood Advisory">Lakeshore Flood Advisory</a></li>
+      <li><div style="background-color:#BA55D3;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=High Surf Advisory">High Surf Advisory</a></li>
+      <li><div style="background-color:#D8BFD8;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Small Craft Advisory">Small Craft Advisory</a></li>
+      <li><div style="background-color:#D8BFD8;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Hazardous Seas Warning">Hazardous Seas Warning</a></li>
+      <li><div style="background-color:#808080;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Air Quality Alert">Air Quality Alert</a></li>
+      <li><div style="background-color:#708090;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Dense Fog Advisory">Dense Fog Advisory</a></li>
+    </ul>
+  </div>
+  <div id="wwacenter_r11">
+    <ul>
+      <li><div style="background-color:#BDB76B;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Blowing Dust Advisory">Blowing Dust Advisory</a></li>
+      <li><div style="background-color:#D2B48C;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Lake Wind Advisory">Lake Wind Advisory</a></li>
+      <li><div style="background-color:#D2B48C;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Wind Advisory">Wind Advisory</a></li>
+      <li><div style="background-color:#6495ED;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Frost Advisory">Frost Advisory</a></li>
+      <li><div style="background-color:#40E0D0;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Rip Current Statement">Rip Current Statement</a></li>
+      <li><div style="background-color:#40E0D0;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Beach Hazards Statement">Beach Hazards Statement</a></li>
+      <li><div style="background-color:#4682B4;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Winter Storm Watch">Winter Storm Watch</a></li>
+      <li><div style="background-color:#B8860B;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=High Wind Watch">High Wind Watch</a></li>
+      <li><div style="background-color:#B22222;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Tropical Storm Warning">Tropical Storm Warning</a></li>
+      <li><div style="background-color:#DC143C;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Hurricane Warning">Hurricane Warning</a></li>
+    </ul>
+  </div>
+  <div id="wwaright11">
+    <ul>
+      <li><div style="background-color:#4169E1;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Hard Freeze Watch">Hard Freeze Watch</a></li>
+      <li><div style="background-color:#00FFFF;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Freeze Watch">Freeze Watch</a></li>
+      <li><div style="background-color:#FFDEAD;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Fire Weather Watch">Fire Weather Watch</a></li>
+      <li><div style="background-color:#FFE4B5;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Special Weather Statement">Special Weather Statement</a></li>
+      <li><div style="background-color:#FFDAB9;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Marine Weather Statement">Marine Weather Statement</a></li>
+      <li><div style="background-color:#808080;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Air Quality Alert">Air Quality Alert</a></li>
+      <li><div style="background-color:#2E8B57;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Flood Watch">Flood Watch</a></li>
+      <li><div style="background-color:#2E8B57;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Flash Flood Watch">Flash Flood Watch</a></li>
+      <li><div style="background-color:#F08080;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Tropical Storm Watch">Tropical Storm Watch</a></li>
+      <li><div style="background-color:#B524F7;" class="wwabox">&nbsp;</div><a href="//forecast.weather.gov/wwamap/wwatxtget.php?cwa=usa&amp;wwa=Storm Surge Warning">Storm Surge Warning</a></li>
+    </ul>
+  </div>
+</div>
