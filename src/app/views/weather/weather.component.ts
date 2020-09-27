@@ -1,12 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable, of, Subscription } from 'rxjs';
 
-import { debounceTime, tap, switchMap, finalize, map } from 'rxjs/operators';
+import { debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
 import { ArcGisLocationDetails } from 'src/app/models/arcgis-location-details';
 import { ArcGisSuggestion } from 'src/app/models/arcgis-suggestion';
 import { ArcgisService } from 'src/app/services/arcgis.service';
 import { Router } from '@angular/router';
+import { SnackbarService } from 'src/app/services/ui/snackbar.service';
 
 @Component({
   selector: 'app-weather',
@@ -43,6 +44,7 @@ export class WeatherComponent implements OnInit {
     private router: Router,
     private searchFormBuilder: FormBuilder,
     private arcgisService: ArcgisService,
+    private snackbarService: SnackbarService,
   ) {
     this.initSearchFormGroup();
   }
@@ -73,6 +75,10 @@ export class WeatherComponent implements OnInit {
     this.alaskaMap = this.alaskaMapSource + "?" + cacheBust;
     this.hawaiiMap = this.hawaiiMapSource + "?" + cacheBust;
     this.timeStamp = now.toUTCString();
+  }
+
+  public clickMap(){
+    this.snackbarService.showInfo("Clicking on map doesn't do anything.");
   }
 
   private initSuggestions(){

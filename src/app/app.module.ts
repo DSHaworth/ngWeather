@@ -16,6 +16,7 @@ import { ForecastComponent } from './views/forecast/forecast.component';
 import { DialogForcastDetailComponent } from './dialogs/dialog-forcast-detail/dialog-forcast-detail.component';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { WeatherComponent } from './views/weather/weather.component';
+import { SnackbarComponent } from './services/ui/snackbar.service';
 //import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
@@ -27,7 +28,8 @@ import { WeatherComponent } from './views/weather/weather.component';
     EsriComponent,
     ForecastComponent,
     DialogForcastDetailComponent,
-    WeatherComponent
+    WeatherComponent,
+    SnackbarComponent
   ],
   imports: [
     BrowserModule,
@@ -39,6 +41,7 @@ import { WeatherComponent } from './views/weather/weather.component';
     //FlexLayoutModule,
     MaterialModule
   ],
+  entryComponents: [],
   providers: [
     //{provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
   ],
