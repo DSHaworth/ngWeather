@@ -32,40 +32,42 @@
 
 /////////////////////////////////////////////////////////////
 // https://github.com/angular/flex-layout/wiki/Responsive-API
-/* XS - Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {
+// http://devfacts.com/media-queries-breakpoints-2020/
+// Mobile First
+/* Mobile, portrait and below*/
+@media only screen and (max-width: 567px) {
   .content > .card {
     flex: 1 1 100%;
     max-width: 100%;
   }
 }
 
-/* SM - Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
+/* Mobile, landscape and above */
+@media only screen and (min-width: 568px) {
   .content > .card {
     flex: 1 1 50%;
     max-width: 50%;
   }
 }
 
-/* MD - Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
+/* Tablet, portrait and above */
+@media only screen and (min-width: 767px) {
   .content > .card {
     flex: 1 1 33%;
     max-width: 33%;
   }
 }
 
-/* LG - Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
+/* Tablet, landscape and above */
+@media only screen and (min-width: 1023px) {
   .content > .card {
     flex: 1 1 25%;
     max-width: 25%;
   }
 }
 
-/* XL - Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {
+/* Laptop displays and above */
+@media only screen and (min-width: 1269px) {
   .content > .card {
     flex: 1 1 20%;
     max-width: 20%;

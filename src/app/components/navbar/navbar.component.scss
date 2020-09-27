@@ -1,0 +1,30 @@
+.nav-bar{
+  display: none;
+}
+/////////////////////////////////////////////////////////////
+// https://github.com/angular/flex-layout/wiki/Responsive-API
+// http://devfacts.com/media-queries-breakpoints-2020/
+// Mobile First
+/* Mobile, portrait and below*/
+@media only screen and (max-width: 567px) {
+}
+
+/* Mobile, landscape and above */
+@media only screen and (min-width: 568px) {
+}
+
+/* Tablet, portrait and above */
+@media only screen and (min-width: 767px) {
+  .nav-bar{
+    display: block;
+  }
+}
+
+/* Tablet, landscape and above */
+@media only screen and (min-width: 1023px) {
+}
+
+/* Laptop displays and above */
+@media only screen and (min-width: 1269px) {
+
+}
