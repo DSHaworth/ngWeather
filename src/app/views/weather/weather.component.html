@@ -45,9 +45,9 @@
 </div>
 
 <div class="USMap">
-  <img id="us" [src]="usMap" usemap="#US_large_imagemap_800_500" (click)="clickMap()">
-  <img id="alaska" [src]="alaskaMap" usemap="#alaska_imagemap_130_115" (click)="clickMap()">
-  <img id="hawaii" [src]="hawaiiMap" usemap="#hawaii_imagemap" (click)="clickMap()">
+  <img id="us" #usMap [src]="usMapUrl" usemap="#US_large_imagemap_800_500" (click)="clickMap()" (load)="mapLoaded('US')">
+  <img id="alaska" #alMap [src]="alaskaMapUrl" usemap="#alaska_imagemap_130_115" (click)="clickMap()" (load)="mapLoaded('AL')">
+  <img id="hawaii" #hiMap [src]="hawaiiMapUrl" usemap="#hawaii_imagemap" (click)="clickMap()" (load)="mapLoaded('HI')">
 </div>
 
 <div id="wwa">

@@ -3,26 +3,29 @@
 }
 #us {
   border: 1px solid #cccccc;
-  width: 800px;
   height: auto;
+  width: 800px;
+  max-width: 100%;
 }
 #alaska {
   position: absolute;
-  top: 385px;
+  bottom: 6px;
   left: 0px;
   z-index: 1;
   border: 1px solid #cccccc;
-  width: 130px;
+  width: auto;
   height: 115px;
+  max-height: 115px;
 }
 #hawaii {
   position: absolute;
-  top: 385px;
-  left: 135px;
+  bottom: 6px;
+  left: 153px;
   z-index: 1;
   border: 1px solid #cccccc;
-  width: 109px;
+  width: auto;
   height: 115px;
+  max-height: 115px;
 }
 /*
 */
