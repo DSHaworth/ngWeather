@@ -38,8 +38,16 @@ export class DialogForcastDetailComponent implements OnInit {
         return "from the South southwest";
       case "SSE":
         return "from the South southeast";
+      case "ESE":
+        return "East southeast";
+      case "ENE":
+        return "East northeast";
+      case "WSW":
+        return "West southwest";
+      case "WNW":
+        return "West northwest";
       default:
-        return "";
+        return windDirection;
     }
   }
 

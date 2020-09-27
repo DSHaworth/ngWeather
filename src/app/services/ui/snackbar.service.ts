@@ -64,7 +64,7 @@ import { MatSnackBarRef, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar'
   line-height: 40px;
 }`,
 `.mat-snack-bar-container .container .message {
-  color: yellow;
+
 }`,
 `.mat-snack-bar-container.customize-snackbar {
   padding: 14px 5px 14px 16px;
