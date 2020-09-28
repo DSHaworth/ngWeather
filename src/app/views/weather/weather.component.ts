@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable, of, Subscription, fromEvent } from 'rxjs';
 
@@ -7,7 +7,6 @@ import { ArcGisLocationDetails } from 'src/app/models/arcgis-location-details';
 import { ArcGisSuggestion } from 'src/app/models/arcgis-suggestion';
 import { ArcgisService } from 'src/app/services/arcgis.service';
 import { Router } from '@angular/router';
-import { SnackbarService } from 'src/app/services/ui/snackbar.service';
 
 @Component({
   selector: 'app-weather',
@@ -16,16 +15,6 @@ import { SnackbarService } from 'src/app/services/ui/snackbar.service';
 })
 export class WeatherComponent implements OnInit, OnDestroy {
 
-  @ViewChild('usMap', { static: false }) public usMap: ElementRef;
-  @ViewChild('alMap', { static: false }) public alMap: ElementRef;
-  @ViewChild('hiMap', { static: false }) public hiMap: ElementRef;
-
-  resizeObservable$: Observable<Event>;
-  resizeSubscription$: Subscription;
-
-  readonly usMapSource: string = "//forecast.weather.gov/wwamap/png/US.png";
-  readonly alaskaMapSource: string = "//forecast.weather.gov/wwamap/png/ak.png";
-  readonly hawaiiMapSource: string = "//weather.gov/wwamap/png/hi.png";
   readonly emptySuggestion: ArcGisSuggestion = {
     isCollection: false,
     text: "",
@@ -33,14 +22,6 @@ export class WeatherComponent implements OnInit, OnDestroy {
   }
 
   searchFormGroup: FormGroup;
-  usMapUrl:string;
-  alaskaMapUrl: string;
-  hawaiiMapUrl: string;
-  timeStamp: string;
-
-  usMapLoaded: boolean = false;
-  alMapLoaded: boolean = false;
-  hiMapLoaded: boolean = false;
 
   suggestions: ArcGisSuggestion[];
   isLoading = false;
@@ -55,7 +36,6 @@ export class WeatherComponent implements OnInit, OnDestroy {
     private router: Router,
     private searchFormBuilder: FormBuilder,
     private arcgisService: ArcgisService,
-    private snackbarService: SnackbarService,
   ) {
     this.initSearchFormGroup();
   }
@@ -75,40 +55,6 @@ export class WeatherComponent implements OnInit, OnDestroy {
 
   public displayProperty(value:ArcGisSuggestion): string | ArcGisSuggestion {
     return value ? value.text : value;
-  }
-
-  public getMaps():void{
-
-    let now = new Date();
-    let cacheBust = now.getTime();
-
-    this.usMapUrl = this.usMapSource + "?" + cacheBust;
-    this.alaskaMapUrl = this.alaskaMapSource + "?" + cacheBust;
-    this.hawaiiMapUrl = this.hawaiiMapSource + "?" + cacheBust;
-    this.timeStamp = now.toUTCString();
-  }
-
-  public clickMap(){
-    this.snackbarService.showInfo("Clicking on map doesn't do anything.");
-  }
-
-  public mapLoaded(mapName: string){
-    switch(mapName.toUpperCase()){
-      case "US":
-        this.usMapLoaded = true;
-        break;
-
-      case "AL":
-        this.alMapLoaded = true;
-        break;
-
-      case "HI":
-        this.hiMapLoaded = true;
-        break;
-    }
-    if(this.usMapLoaded && this.alMapLoaded && this.hiMapLoaded){
-      this.resizeImages();
-    }
   }
 
   private initSuggestions(){
@@ -160,29 +106,13 @@ export class WeatherComponent implements OnInit, OnDestroy {
     });
   }
 
-  private resizeImages(){
-    let usHeight = this.usMap.nativeElement.height;
-
-    this.hiMap.nativeElement.style.height = this.alMap.nativeElement.style.height = (115 / 500) * usHeight + "px";
-    this.hiMap.nativeElement.style.left = this.alMap.nativeElement.width + 4 + "px";
-  }
-
-  private resize(){
-    this.resizeObservable$ = fromEvent(window, 'resize')
-    this.resizeSubscription$ = this.resizeObservable$.subscribe( evt => {
-      this.resizeImages();
-    })
-  }
 
   ngOnInit(): void {
-    this.getMaps();
     this.initSuggestions();
-    this.resize();
   }
 
   ngOnDestroy(): void{
     this.findSubscription.unsubscribe();
     this.searchSubscription.unsubscribe();
-    this.resizeSubscription$.unsubscribe()
   }
 }

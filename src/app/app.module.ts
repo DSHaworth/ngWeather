@@ -17,6 +17,7 @@ import { DialogForcastDetailComponent } from './dialogs/dialog-forcast-detail/di
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { WeatherComponent } from './views/weather/weather.component';
 import { SnackbarComponent } from './services/ui/snackbar.service';
+import { UsWeatherMapsComponent } from './components/us-weather-maps/us-weather-maps.component';
 //import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
@@ -29,7 +30,8 @@ import { SnackbarComponent } from './services/ui/snackbar.service';
     ForecastComponent,
     DialogForcastDetailComponent,
     WeatherComponent,
-    SnackbarComponent
+    SnackbarComponent,
+    UsWeatherMapsComponent
   ],
   imports: [
     BrowserModule,
