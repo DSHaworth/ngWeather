@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Observable, of, Subscription, fromEvent } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 
 import { debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
 import { ArcGisLocationDetails } from 'src/app/models/arcgis-location-details';

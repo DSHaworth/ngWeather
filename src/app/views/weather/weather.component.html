@@ -1,4 +1,4 @@
-<p>Maps retrieved at {{timeStamp}}</p>
+<p>Maps retrieved at {{usMaps.timeStamp}}</p>
 
 <div style="display: flex; flex-direction: row; justify-content: space-between; width: 800px;">
   <div style="display: flex; flex-direction: row; justify-content: flex-start;">
@@ -38,13 +38,13 @@
   </div>
 
   <div>
-    <button mat-icon-button aria-label="Refresh maps" (click)="getMaps()">
+    <button mat-icon-button aria-label="Refresh maps" (click)="usMaps.getMaps()">
       <mat-icon>refresh</mat-icon>
     </button>
   </div>
 </div>
 
-<app-us-weather-maps></app-us-weather-maps>
+<app-us-weather-maps #usMaps></app-us-weather-maps>
 
 <div id="wwa">
   <div id="wwaleft11">
