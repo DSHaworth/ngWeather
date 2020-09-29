@@ -1,0 +1,22 @@
+<form class="" [formGroup]="searchFormGroup">
+  <mat-form-field class="" style="width: 250px;">
+    <mat-label>Search Location</mat-label>
+    <input
+      [matAutocomplete]="auto"
+      type="text"
+      formControlName="search"
+      matInput
+      placeholder="Location">
+    <mat-icon matSuffix>search</mat-icon>
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayProperty" (optionSelected)="updateMySelection($event.option.value)" >
+      <mat-option *ngIf="isLoading" class="is-loading">
+        <mat-progress-bar mode='query'></mat-progress-bar>
+      </mat-option>
+      <ng-container *ngIf="!isLoading">
+        <mat-option *ngFor="let suggestion of suggestions" [value]="suggestion">
+          {{suggestion.text}}
+        </mat-option>
+      </ng-container>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>

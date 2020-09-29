@@ -1,8 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Observable, of, Subscription } from 'rxjs';
-
-import { debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { ArcGisLocationDetails } from 'src/app/models/arcgis-location-details';
 import { ArcGisSuggestion } from 'src/app/models/arcgis-suggestion';
 import { ArcgisService } from 'src/app/services/arcgis.service';
@@ -15,33 +12,16 @@ import { Router } from '@angular/router';
 })
 export class WeatherComponent implements OnInit, OnDestroy {
 
-  readonly emptySuggestion: ArcGisSuggestion = {
-    isCollection: false,
-    text: "",
-    magicKey: ""
-  }
-
-  searchFormGroup: FormGroup;
-
-  suggestions: ArcGisSuggestion[];
-  isLoading = false;
-  errorMsg: string;
-  target: ArcGisSuggestion = this.emptySuggestion;
-
-  // Subscriptions
   findSubscription: Subscription;
-  searchSubscription: Subscription;
 
   constructor(
     private router: Router,
-    private searchFormBuilder: FormBuilder,
     private arcgisService: ArcgisService,
   ) {
-    this.initSearchFormGroup();
   }
 
-  public getWeatherByLocation(){
-    this.findSubscription = this.arcgisService.find(this.target.text, this.target.magicKey)
+  public getWeatherByLocation(target: ArcGisSuggestion){
+    this.findSubscription = this.arcgisService.find(target.text, target.magicKey)
       .subscribe((data: ArcGisLocationDetails)=>{
         let lat = data.locations[0].feature.geometry.y;
         let long = data.locations[0].feature.geometry.x;
@@ -49,70 +29,10 @@ export class WeatherComponent implements OnInit, OnDestroy {
       })
   }
 
-  public updateMySelection(selectedItem: ArcGisSuggestion){
-    this.target = selectedItem;
-  }
-
-  public displayProperty(value:ArcGisSuggestion): string | ArcGisSuggestion {
-    return value ? value.text : value;
-  }
-
-  private initSuggestions(){
-    // https://www.freakyjolly.com/angular-material-autocomplete-example-using-server-results/#.X1rZwHlKiUk
-    this.searchSubscription = this.searchFormGroup.get('search').valueChanges
-      .pipe(
-        debounceTime(500),
-        tap({
-          next: () => {
-            this.errorMsg = "";
-            this.suggestions = [];
-          }
-        }),
-        switchMap((value) => this.getData(value))
-      )
-      .subscribe(data => {
-        if (data['suggestions'] && data['suggestions'].length === 0) {
-          this.errorMsg = "No records returned";
-          this.suggestions = [];
-          this.target = this.emptySuggestion;
-        } else {
-          this.errorMsg = "";
-          this.suggestions = data['suggestions'];
-        }
-      });
-  }
-
-  // Determine if source is string (do a search) or an object (do nothing)
-  private getData(value: string | ArcGisSuggestion): Observable<ArcGisSuggestion[]>{
-    if( typeof value === 'string'){
-      this.isLoading = true;
-      return  <Observable<ArcGisSuggestion[]>> this.arcgisService.getSuggestions(value).pipe(
-        finalize(() => {
-          this.isLoading = false;
-        })
-      );
-    } else {
-      return of([value]);
-    }
-  }
-
-  private initSearchFormGroup(){
-    this.searchFormGroup = this.createSearchFormGroup();
-  }
-
-  private createSearchFormGroup(){
-    return this.searchFormBuilder.group({
-      search: ['', Validators.required]
-    });
-  }
-
-
   ngOnInit(): void {
-    this.initSuggestions();
   }
 
   ngOnDestroy(): void{
     this.findSubscription.unsubscribe();
-    this.searchSubscription.unsubscribe();
   }
 }

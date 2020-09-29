@@ -20,14 +20,17 @@ export class UsWeatherMapsComponent implements OnInit, OnDestroy {
   readonly alaskaMapSource: string = "//forecast.weather.gov/wwamap/png/ak.png";
   readonly hawaiiMapSource: string = "//weather.gov/wwamap/png/hi.png";
 
+  public allMapsLoaded: boolean = false;
+  public timeStamp: string;
+
   usMapUrl:string;
   alaskaMapUrl: string;
   hawaiiMapUrl: string;
-  timeStamp: string;
 
   usMapLoaded: boolean = false;
   alMapLoaded: boolean = false;
   hiMapLoaded: boolean = false;
+
 
   constructor(
     private snackbarService: SnackbarService,
@@ -63,6 +66,7 @@ export class UsWeatherMapsComponent implements OnInit, OnDestroy {
         break;
     }
     if(this.usMapLoaded && this.alMapLoaded && this.hiMapLoaded){
+      this.allMapsLoaded = true;
       this.resizeImages();
     }
   }
