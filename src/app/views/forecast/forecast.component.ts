@@ -45,7 +45,8 @@ export class ForecastComponent implements OnInit, OnDestroy {
 
   public showDetail(period){
     //const dialogRef = this.dialog.open(DialogForcastDetailComponent, {data: period, width: window.innerWidth < 768 ? "80vw" : "50vw"});
-    const dialogRef = this.dialog.open(DialogForcastDetailComponent, {data: period});
+    // https://stackoverflow.com/questions/45928423/get-rid-of-white-space-around-angular-material-modal-dialog
+    const dialogRef = this.dialog.open(DialogForcastDetailComponent, {panelClass: 'weather-detail-dialog', data: period});
   }
 
   public refresh(){

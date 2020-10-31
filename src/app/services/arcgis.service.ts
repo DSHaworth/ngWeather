@@ -16,13 +16,13 @@ export class ArcgisService {
 
   getSuggestions( value: string){
     return this.httpClient
-            .get(`http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?text=${value}&f=json&maxSuggestions=10&countryCode=USA,PRI,VIR,GUM,ASM&category=Land%20Features,Bay,Channel,Cove,Dam,Delta,Gulf,Lagoon,Lake,Ocean,Reef,Reservoir,Sea,Sound,Strait,Waterfall,Wharf,Amusement%20Park,Historical%20Monument,Landmark,Tourist%20Attraction,Zoo,College,Beach,Campground,Golf%20Course,Harbor,Nature%20Reserve,Other%20Parks%20and%20Outdoors,Park,Racetrack,Scenic%20Overlook,Ski%20Resort,Sports%20Center,Sports%20Field,Wildlife%20Reserve,Airport,Ferry,Marina,Pier,Port,Resort,Postal,Populated%20Place`)
+            .get(`https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?text=${value}&f=json&maxSuggestions=10&countryCode=USA,PRI,VIR,GUM,ASM&category=Land%20Features,Bay,Channel,Cove,Dam,Delta,Gulf,Lagoon,Lake,Ocean,Reef,Reservoir,Sea,Sound,Strait,Waterfall,Wharf,Amusement%20Park,Historical%20Monument,Landmark,Tourist%20Attraction,Zoo,College,Beach,Campground,Golf%20Course,Harbor,Nature%20Reserve,Other%20Parks%20and%20Outdoors,Park,Racetrack,Scenic%20Overlook,Ski%20Resort,Sports%20Center,Sports%20Field,Wildlife%20Reserve,Airport,Ferry,Marina,Pier,Port,Resort,Postal,Populated%20Place`)
             .pipe(catchError(this.httpErrorHandlerService.handleError));
   }
 
   find( text: string, magicKey: string){
     return this.httpClient
-            .get(`http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find?text=${text}&magicKey=${magicKey}&f=json`)
+            .get(`https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find?text=${text}&magicKey=${magicKey}&f=json`)
             .pipe(catchError(this.httpErrorHandlerService.handleError));
   }
 }
