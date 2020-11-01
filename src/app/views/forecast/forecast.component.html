@@ -1,6 +1,6 @@
 <div *ngIf="forecastOffice">
   <mat-card>
-    <mat-card-header style="margin-top: -.5rem">
+    <mat-card-header class="page-card-title">
       <mat-card-title-group style="display: flex; flex-flow: row nowrap; align-items: center;">
         <mat-card-title style="margin-bottom: 0;">
           {{forecastOffice.name}}
@@ -32,13 +32,14 @@
             </mat-card-content>
             <mat-card-footer>
               <div style="font-size: 1rem; display: flex; justify-content: center; align-items: flex-end; padding-bottom: 20px;">
-                {{period.isDaytime == true ? "High" : "Low"}} {{period.temperature}}{{period.temperatureUnit == "F" ? "&#8457;" : "&#8451;"}}
+                {{period.isDaytime == true ? "High" : "Low"}} {{period.temperature}}&#176;{{period.temperatureUnit}}
               </div>
             </mat-card-footer>
           </mat-card>
         </div>
       </div>
 
+      <!--
       <mat-selection-list [multiple]="false" (selectionChange)="onPeriodSelected($event)">
         <mat-list-option *ngFor="let period of forecastDetails.properties.periods" [value]="period">
           <div style="display: flex; flex-direction: row;">
@@ -54,9 +55,10 @@
               </div>
             </div>
           </div>
-          <!-- <mat-divider></mat-divider> -->
+          <mat-divider></mat-divider>
         </mat-list-option>
       </mat-selection-list>
+      -->
     </mat-card-content>
   </mat-card>
 

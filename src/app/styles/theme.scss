@@ -1,5 +1,18 @@
-//@import '~@angular/material/theming';
-//@include mat-core();
+//////////////////////////////////////////////
+// https://medium.com/@aleixsuau/how-to-use-angular-material-2-sass-variables-in-your-components-76ce0203f126
+// Import material theming functions
+@import '~@angular/material/theming';
+
+// Copy the palettes from your selected theme (usually theme.scss).
+$app-primary: mat-palette($mat-deep-purple);
+$app-accent:  mat-palette($mat-light-blue);
+$app-warn:    mat-palette($mat-pink);
+
+// Create your Sass color vars (will be available in all the project)
+$primary: mat-color($app-primary);
+$accent: mat-color($app-accent);
+$warn: mat-color($app-warn);
+//////////////////////////////////////////////
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
@@ -8,11 +21,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   padding: 5px;
 }
 
+.page-card-title{
+  margin: -.5rem 0 .75rem -2rem;
+}
+
+/* Weather Detail Dialog Start */
 .weather-detail-dialog .mat-dialog-title{
   margin: -5px -5px 0 -5px;
-  padding: 5px;
-  //background-color: map-get($color-primary, 100);
-  background-color: #673ab7;
+  padding: 5px 5px 5px 10px;
+  background-color: $primary;
   color: #ffff;
 }
 
@@ -20,3 +37,4 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   padding: 10px 10px 5px 10px;
   margin:  0;//5px -24px;
 }
+/* Weather Detail Dialog Stop */
