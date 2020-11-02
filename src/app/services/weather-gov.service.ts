@@ -50,8 +50,8 @@ export class WeatherGovService {
   }
 
   async parseXmlToJson(xml) {
-    console.log(xml)
     // https://stackblitz.com/edit/angular-get-xml-with-http-client-and-render-list
+    // console.log(xml)
     const parser = new xml2js.Parser({ explicitArray: false });
     parser
       .parseStringPromise(xml)

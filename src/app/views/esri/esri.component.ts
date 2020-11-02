@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from "@angular/core";
 import { loadModules } from "esri-loader";
+import { Subscription } from 'rxjs';
 import { WeatherGovService } from 'src/app/services/weather-gov.service';
 
 @Component({
@@ -8,9 +9,10 @@ import { WeatherGovService } from 'src/app/services/weather-gov.service';
   styleUrls: ['./esri.component.scss']
 })
 export class EsriComponent implements OnInit, OnDestroy {
-  // The <div> where we will place the map
   @ViewChild("mapView", { static: true }) private mapViewEl: ElementRef;
   view: any;
+
+  getAlertsSubscription: Subscription;
 
   constructor(
     private weatherGovService: WeatherGovService
@@ -81,7 +83,7 @@ export class EsriComponent implements OnInit, OnDestroy {
   }
 
   getAlerts(){
-    this.weatherGovService.getAlerts()
+    this.getAlertsSubscription = this.weatherGovService.getAlerts()
     .subscribe( (data) => {
       console.log(data);
     });
@@ -97,6 +99,7 @@ export class EsriComponent implements OnInit, OnDestroy {
       // destroy the map view
       this.view.destroy();
     }
+    this.getAlertsSubscription.unsubscribe();
   }
 }
 
