@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from "@angular/core";
 import { loadModules } from "esri-loader";
+import { WeatherGovService } from 'src/app/services/weather-gov.service';
 
 @Component({
   selector: 'app-esri',
@@ -11,7 +12,9 @@ export class EsriComponent implements OnInit, OnDestroy {
   @ViewChild("mapView", { static: true }) private mapViewEl: ElementRef;
   view: any;
 
-  constructor() {}
+  constructor(
+    private weatherGovService: WeatherGovService
+  ) {}
 
   async initializeMap() {
     try {
@@ -77,8 +80,16 @@ export class EsriComponent implements OnInit, OnDestroy {
     });
   }
 
+  getAlerts(){
+    this.weatherGovService.getAlerts()
+    .subscribe( (data) => {
+      console.log(data);
+    });
+  }
+
   ngOnInit() {
     this.initializeMap();
+    this.getAlerts();
   }
 
   ngOnDestroy() {
